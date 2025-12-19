@@ -88,7 +88,7 @@ export const documentObservations: Observation[] = [
     description: "Description of high penalty clause and more relevant information",
     color: "orange",
     category: "01-Deliverables",
-    highlightSections: [],
+    highlightSections: ["section-capabilities"],
   },
   {
     id: "doc-obs-3",
@@ -96,7 +96,7 @@ export const documentObservations: Observation[] = [
     description: "Description of high penalty clause and more relevant information",
     color: "orange",
     category: "01-Deliverables",
-    highlightSections: [],
+    highlightSections: ["section-qualifications"],
   },
   {
     id: "doc-obs-4",
@@ -104,7 +104,7 @@ export const documentObservations: Observation[] = [
     description: "References ACI 318-19 for concrete specifications",
     color: "green",
     category: "02-Highlighted external references",
-    highlightSections: [],
+    highlightSections: ["section-aci-standards"],
   },
   {
     id: "doc-obs-5",
@@ -112,7 +112,7 @@ export const documentObservations: Observation[] = [
     description: "Multiple OSHA standards referenced throughout the document",
     color: "green",
     category: "02-Highlighted external references",
-    highlightSections: [],
+    highlightSections: ["section-osha"],
   },
   {
     id: "doc-obs-6",
@@ -120,7 +120,7 @@ export const documentObservations: Observation[] = [
     description: "Project timeline appears aggressive for scope of work",
     color: "blue",
     category: "03-Risks",
-    highlightSections: [],
+    highlightSections: ["section-timeline"],
   },
   {
     id: "doc-obs-7",
@@ -128,7 +128,7 @@ export const documentObservations: Observation[] = [
     description: "Fixed price contract with limited change order provisions",
     color: "red",
     category: "03-Risks",
-    highlightSections: [],
+    highlightSections: ["section-budget"],
   },
 ];
 

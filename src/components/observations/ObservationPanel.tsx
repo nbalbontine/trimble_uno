@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   Search,
   Plus,
-  Camera,
   Mic,
   Send,
   Share2,
@@ -93,7 +92,28 @@ export function ObservationPanel({
   };
 
   const handleSendComment = (obsId: string) => {
-    console.log("Sending comment for", obsId, ":", commentInputs[obsId]);
+    const commentText = commentInputs[obsId];
+    if (!commentText?.trim()) return;
+
+    // Add new comment to the top of the comments list
+    const observation = observations.find((obs) => obs.id === obsId);
+    if (observation) {
+      const newComment = {
+        id: `comment-${Date.now()}`,
+        author: "You",
+        role: "Project Manager",
+        content: commentText,
+        timestamp: new Date().toISOString(),
+      };
+      
+      // Add to the beginning of comments array
+      if (!observation.comments) {
+        observation.comments = [];
+      }
+      observation.comments.unshift(newComment);
+    }
+
+    // Clear input
     setCommentInputs((prev) => ({ ...prev, [obsId]: "" }));
   };
 
@@ -104,13 +124,12 @@ export function ObservationPanel({
     return (
       <motion.div
         key={observation.id}
-        layout
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <Card
           className={cn(
-            "transition-all duration-200 cursor-pointer overflow-hidden",
+            "cursor-pointer",
             isSelected
               ? cn(
                   "border-2",
@@ -135,12 +154,12 @@ export function ObservationPanel({
                 />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">
                       Observation
                     </span>
                   </div>
-                  <h4 className="font-medium text-sm">{observation.title}</h4>
-                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                  <h4 className="font-medium text-sm leading-tight">{observation.title}</h4>
+                  <p className="text-xs text-muted-foreground mt-1 leading-tight line-clamp-2">
                     {observation.description}
                   </p>
                 </div>
@@ -158,25 +177,25 @@ export function ObservationPanel({
             {/* Expandable Content */}
             <Collapsible open={isExpanded}>
               <CollapsibleTrigger
-                className="w-full text-left flex items-start justify-start"
+                className="w-full text-left flex items-start justify-start mt-3"
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleCardExpand(observation.id);
                 }}
               >
-                <span className="text-xs text-primary mt-3 hover:underline whitespace-nowrap flex-shrink-0">
+                <span className="text-xs text-primary hover:underline whitespace-nowrap flex-shrink-0 leading-tight">
                   {isExpanded ? "Hide comments" : "Add comment"}
                 </span>
               </CollapsibleTrigger>
-              <CollapsibleContent className="overflow-hidden">
+              <CollapsibleContent>
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
-                      className="mt-3 space-y-3 border-t pt-3"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-3 border-t pt-3 overflow-hidden"
                       onClick={(e) => e.stopPropagation()}
                     >
                       {/* Existing Comments */}
@@ -205,43 +224,45 @@ export function ObservationPanel({
 
                       {/* Comment Input */}
                       <div className="flex items-center gap-2 pt-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                        <Input
-                          placeholder="Add a comment..."
-                          value={commentInputs[observation.id] || ""}
-                          onChange={(e) =>
-                            handleCommentChange(observation.id, e.target.value)
-                          }
-                          className="h-8 text-sm"
-                        />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0"
-                        >
-                          <Camera className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 shrink-0"
-                        >
-                          <Mic className="h-4 w-4" />
-                        </Button>
-                        {commentInputs[observation.id] && (
-                          <Button
-                            size="icon"
-                            className="h-8 w-8 shrink-0"
-                            onClick={() => handleSendComment(observation.id)}
-                          >
-                            <Send className="h-4 w-4" />
-                          </Button>
+                        <div className="relative flex-1">
+                          <Input
+                            placeholder="Add a comment..."
+                            value={commentInputs[observation.id] || ""}
+                            onChange={(e) =>
+                              handleCommentChange(observation.id, e.target.value)
+                            }
+                            className="h-9 text-sm pr-10 border-2 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0"
+                          />
+                          {commentInputs[observation.id] && (
+                            <Button
+                              size="icon"
+                              className="h-7 w-7 absolute right-1 top-1/2 -translate-y-1/2 rounded-md"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSendComment(observation.id);
+                              }}
+                            >
+                              <Send className="h-3.5 w-3.5" />
+                            </Button>
+                          )}
+                        </div>
+                        {!commentInputs[observation.id] && (
+                          <>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-9 w-9 shrink-0"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-9 w-9 shrink-0"
+                            >
+                              <Mic className="h-4 w-4" />
+                            </Button>
+                          </>
                         )}
                       </div>
                     </motion.div>

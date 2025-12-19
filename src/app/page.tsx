@@ -19,10 +19,15 @@ type StepStatus = "pending" | "in-progress" | "completed";
 
 export default function AnalysisPage() {
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
   const [stepStatuses, setStepStatuses] = useState<StepStatus[]>(
     analysisSteps.map(() => "pending")
   );
   const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Start the first step
@@ -112,7 +117,7 @@ export default function AnalysisPage() {
       <div className="flex-1 flex items-center justify-center p-8">
         <Card className="w-full max-w-lg p-8">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             className="space-y-8"
           >
