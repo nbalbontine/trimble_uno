@@ -2,26 +2,290 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* =================================
+   TRIMBLE UNO THEME CONFIGURATION
+   
+   To update brand colors:
+   1. Modify --primary HSL values below
+   2. Update --primary-foreground for contrast
+   3. Adjust --ring to match primary for focus states
+   
+   Current Theme: Professional Blue
+   Primary Color: hsl(221, 83%, 53%) - #3B82F6
+   
+   Color Reference:
+   - Primary Blue: Used for buttons, links, active states
+   - Destructive Red: Used for errors, delete actions
+   - Success Green: Used for completed states, confirmations
+   - Warning Orange/Yellow: Used for warnings, attention items
+   
+   Observation Card Colors (used throughout the app):
+   - Red/Coral: --observation-red: 0 84% 60%
+   - Orange: --observation-orange: 25 95% 53%
+   - Yellow: --observation-yellow: 48 96% 53%
+   - Green: --observation-green: 142 71% 45%
+   - Blue: --observation-blue: 221 83% 53%
+   - Purple: --observation-purple: 262 83% 58%
+   ================================= */
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@layer base {
+  :root {
+    /* =================================
+       LIGHT THEME VARIABLES
+       ================================= */
+    
+    /* Background colors */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    
+    /* Card and popover surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    
+    /* Primary - Professional Blue */
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    
+    /* Secondary - Muted blue-gray */
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    
+    /* Muted elements */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    /* Accent - Subtle highlight */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    
+    /* Destructive - Error/Delete actions */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    
+    /* Borders and inputs */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+    
+    /* Chart colors */
+    --chart-1: 221 83% 53%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 25 95% 53%;
+    --chart-4: 48 96% 53%;
+    --chart-5: 0 84% 60%;
+    
+    /* Border radius */
+    --radius: 0.5rem;
+    
+    /* =================================
+       OBSERVATION CARD COLORS
+       These are used for categorizing observations
+       ================================= */
+    --observation-red: 0 84% 60%;
+    --observation-orange: 25 95% 53%;
+    --observation-yellow: 48 96% 53%;
+    --observation-green: 142 71% 45%;
+    --observation-blue: 221 83% 53%;
+    --observation-purple: 262 83% 58%;
+    --observation-gray: 215 16% 47%;
+    
+    /* Success color */
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+  }
+
+  .dark {
+    /* =================================
+       DARK THEME VARIABLES
+       ================================= */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    
+    /* Primary - Blue (brighter in dark mode) */
+    --primary: 221 83% 53%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 221 83% 53%;
+    
+    --chart-1: 221 83% 53%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 25 95% 53%;
+    --chart-4: 48 96% 53%;
+    --chart-5: 0 84% 60%;
+    
+    /* Observation colors (same in dark mode) */
+    --observation-red: 0 84% 60%;
+    --observation-orange: 25 95% 53%;
+    --observation-yellow: 48 96% 53%;
+    --observation-green: 142 71% 45%;
+    --observation-blue: 221 83% 53%;
+    --observation-purple: 262 83% 58%;
+    --observation-gray: 215 16% 47%;
+    
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* =================================
+   CUSTOM UTILITY CLASSES
+   ================================= */
+
+@layer utilities {
+  /* Observation dot colors */
+  .observation-dot-red {
+    @apply bg-[hsl(var(--observation-red))];
+  }
+  .observation-dot-orange {
+    @apply bg-[hsl(var(--observation-orange))];
+  }
+  .observation-dot-yellow {
+    @apply bg-[hsl(var(--observation-yellow))];
+  }
+  .observation-dot-green {
+    @apply bg-[hsl(var(--observation-green))];
+  }
+  .observation-dot-blue {
+    @apply bg-[hsl(var(--observation-blue))];
+  }
+  .observation-dot-purple {
+    @apply bg-[hsl(var(--observation-purple))];
+  }
+  .observation-dot-gray {
+    @apply bg-[hsl(var(--observation-gray))];
+  }
+  
+  /* Highlight colors for PDF/Map overlays */
+  .highlight-red {
+    @apply bg-[hsl(var(--observation-red)/0.2)] border-l-4 border-[hsl(var(--observation-red))];
+  }
+  .highlight-orange {
+    @apply bg-[hsl(var(--observation-orange)/0.2)] border-l-4 border-[hsl(var(--observation-orange))];
+  }
+  .highlight-yellow {
+    @apply bg-[hsl(var(--observation-yellow)/0.2)] border-l-4 border-[hsl(var(--observation-yellow))];
+  }
+  .highlight-green {
+    @apply bg-[hsl(var(--observation-green)/0.2)] border-l-4 border-[hsl(var(--observation-green))];
+  }
+  .highlight-blue {
+    @apply bg-[hsl(var(--observation-blue)/0.2)] border-l-4 border-[hsl(var(--observation-blue))];
+  }
+  .highlight-purple {
+    @apply bg-[hsl(var(--observation-purple)/0.2)] border-l-4 border-[hsl(var(--observation-purple))];
+  }
+  
+  /* Scrollbar styling */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+/* =================================
+   ANIMATION KEYFRAMES
+   ================================= */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes typing {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.1) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.5s infinite ease-in-out;
+}
+
+.animate-typing {
+  animation: typing 1.5s infinite ease-in-out;
 }
