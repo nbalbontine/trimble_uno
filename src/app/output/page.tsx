@@ -53,7 +53,7 @@ export default function OutputPage() {
       onClick: () => router.push("/deliverables"),
     },
     {
-      label: "Save",
+      label: "Done",
       icon: <Save className="h-4 w-4" />,
       variant: "default" as const,
       onClick: () => router.push("/discussions?loading=true"),

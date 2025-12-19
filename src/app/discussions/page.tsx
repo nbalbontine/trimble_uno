@@ -10,6 +10,8 @@ import {
   ArrowUpDown,
   Settings,
   ChevronDown,
+  Calculator,
+  Pencil,
 } from "lucide-react";
 import { MainLayout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
@@ -43,13 +45,13 @@ function DiscussionsContent() {
   useEffect(() => {
     if (searchParams.get("loading") === "true") {
       setIsLoading(true);
-      // Simulate loading for 5 seconds
+      // Simulate loading for 3 seconds
       const timer = setTimeout(() => {
         setIsLoading(false);
         setLoadedData(true);
         // Clean up the URL
         router.replace("/discussions");
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [searchParams, router]);
@@ -64,7 +66,7 @@ function DiscussionsContent() {
     }
   };
 
-  const renderTableRow = (discussion: typeof discussionsThisMonth[0], index: number) => {
+  const renderTableRow = (discussion: typeof discussionsThisMonth[0], index: number, isFirstTable: boolean = false) => {
     if (discussion.isLoading || (isLoading && index === 0)) {
       return (
         <TableRow key={discussion.id} className="bg-muted/30">
@@ -85,6 +87,9 @@ function DiscussionsContent() {
           </TableCell>
           <TableCell>
             <div className="h-4 w-20 animate-shimmer rounded" />
+          </TableCell>
+          <TableCell>
+            <div className="h-4 w-24 animate-shimmer rounded" />
           </TableCell>
           <TableCell>
             <div className="h-4 w-24 animate-shimmer rounded" />
@@ -127,6 +132,29 @@ function DiscussionsContent() {
         <TableCell className="text-muted-foreground">
           {discussion.date}
         </TableCell>
+        <TableCell>
+          {isFirstTable && index === 0 ? (
+            <Button
+              variant="default"
+              size="sm"
+              onClick={(e) => e.stopPropagation()}
+              className="gap-2"
+            >
+              <Calculator className="h-4 w-4" />
+              Generate Estimate
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => e.stopPropagation()}
+              className="gap-2"
+            >
+              <Pencil className="h-4 w-4" />
+              Edit
+            </Button>
+          )}
+        </TableCell>
       </TableRow>
     );
   };
@@ -138,10 +166,6 @@ function DiscussionsContent() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <h1 className="text-xl font-semibold">Discussions</h1>
-            <div className="flex gap-1">
-              <div className="w-6 h-6 rounded bg-muted" />
-              <div className="w-6 h-6 rounded bg-muted" />
-            </div>
           </div>
         </div>
 
@@ -180,7 +204,6 @@ function DiscussionsContent() {
                 <ArrowUpDown className="h-4 w-4" />
                 Sort
               </Button>
-              <div className="w-6 h-6 rounded bg-muted" />
             </div>
 
             {/* Tables */}
@@ -195,7 +218,7 @@ function DiscussionsContent() {
                   <div className="border rounded-lg overflow-hidden">
                     <Table>
                       <TableHeader>
-                        <TableRow>
+                        <TableRow className="bg-muted hover:bg-muted">
                           <TableHead className="w-12">
                             <Checkbox />
                           </TableHead>
@@ -205,11 +228,12 @@ function DiscussionsContent() {
                           <TableHead>Project</TableHead>
                           <TableHead>Participants</TableHead>
                           <TableHead>Date</TableHead>
+                          <TableHead>Action</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {currentDiscussions.map((discussion, index) =>
-                          renderTableRow(discussion, index)
+                          renderTableRow(discussion, index, true)
                         )}
                       </TableBody>
                     </Table>
@@ -225,7 +249,7 @@ function DiscussionsContent() {
                   <div className="border rounded-lg overflow-hidden">
                     <Table>
                       <TableHeader>
-                        <TableRow>
+                        <TableRow className="bg-muted hover:bg-muted">
                           <TableHead className="w-12">
                             <Checkbox />
                           </TableHead>
@@ -235,11 +259,12 @@ function DiscussionsContent() {
                           <TableHead>Project</TableHead>
                           <TableHead>Participants</TableHead>
                           <TableHead>Date</TableHead>
+                          <TableHead>Action</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {discussionsNextMonth.map((discussion, index) =>
-                          renderTableRow(discussion, index)
+                          renderTableRow(discussion, index, false)
                         )}
                       </TableBody>
                     </Table>
@@ -274,7 +299,6 @@ function DiscussionsContent() {
                   <ArrowUpDown className="h-4 w-4" />
                   Sort
                 </Button>
-                <div className="w-6 h-6 rounded bg-muted" />
               </div>
 
               <h2 className="text-xl font-semibold mb-6">Timeline</h2>

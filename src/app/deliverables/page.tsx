@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { MoreHorizontal, X, Save, Mail, Video, MoreVertical } from "lucide-react";
+import { MoreHorizontal, X, Save, Mail, Video, MoreVertical, FileText, Eye, Lightbulb, Calculator } from "lucide-react";
 import { MainLayout, PageHeader } from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -48,8 +48,8 @@ export default function DeliverablesPage() {
       onClick: () => router.push("/review"),
     },
     {
-      label: "Save",
-      icon: <Save className="h-4 w-4" />,
+      label: "Generate Estimate",
+      icon: <Calculator className="h-4 w-4" />,
       variant: "default" as const,
       onClick: () => router.push("/discussions"),
     },
@@ -75,7 +75,7 @@ export default function DeliverablesPage() {
             <Card className="h-full">
               <CardHeader className="pb-4 border-b">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded bg-muted" />
+                  <FileText className="h-4 w-4 text-muted-foreground" />
                   <CardTitle className="text-base">Project Details</CardTitle>
                 </div>
               </CardHeader>
@@ -127,22 +127,21 @@ export default function DeliverablesPage() {
             <Card className="h-full">
               <CardHeader className="pb-4 border-b">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded bg-muted" />
+                  <Eye className="h-4 w-4 text-muted-foreground" />
                   <CardTitle className="text-base">Observation</CardTitle>
                 </div>
               </CardHeader>
               <ScrollArea className="h-[calc(100%-60px)]">
-                <CardContent className="p-4 grid grid-rows-2 gap-4 h-full">
+                <CardContent className="p-4 space-y-4">
                   {kanbanObservations.map((item, index) => (
                     <motion.div
                       key={item.id}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.15 + index * 0.05 }}
-                      className="min-h-0"
                     >
-                      <Card className="bg-muted/50 h-full">
-                        <CardContent className="p-4">
+                      <Card className="bg-muted/50 h-[220px] flex flex-col">
+                        <CardContent className="p-4 flex flex-col flex-1">
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-start gap-3">
                               <div
@@ -194,7 +193,7 @@ export default function DeliverablesPage() {
             <Card className="h-full bg-green-50/50 dark:bg-green-950/10">
               <CardHeader className="pb-4 border-b">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded bg-green-200 dark:bg-green-800" />
+                  <Lightbulb className="h-4 w-4 text-green-600 dark:text-green-400" />
                   <CardTitle className="text-base">Suggested output</CardTitle>
                 </div>
               </CardHeader>
@@ -207,8 +206,8 @@ export default function DeliverablesPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.25 + index * 0.05 }}
                     >
-                      <Card className="bg-white dark:bg-card">
-                        <CardContent className="p-4">
+                      <Card className="bg-white dark:bg-card h-[220px] flex flex-col">
+                        <CardContent className="p-4 flex flex-col flex-1">
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-start gap-3">
                               <div
@@ -242,7 +241,7 @@ export default function DeliverablesPage() {
                           </div>
 
                           {/* Action Button */}
-                          <div className="mt-4 flex justify-end">
+                          <div className="mt-auto pt-4 flex justify-end">
                             <Button
                               variant="outline"
                               size="sm"
@@ -265,7 +264,7 @@ export default function DeliverablesPage() {
       </div>
 
       {/* Bottom Action Bar */}
-      <div className="border-t bg-card px-6 py-4 flex justify-end gap-3">
+      <div className="bg-card px-6 py-4 flex justify-end gap-3 border-0">
         <Button variant="outline" className="gap-2">
           <Mail className="h-4 w-4" />
           Generate email

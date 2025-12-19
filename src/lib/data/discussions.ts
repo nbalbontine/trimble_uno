@@ -12,16 +12,6 @@ export interface Discussion {
 
 export const discussionsThisMonth: Discussion[] = [
   {
-    id: "disc-loading",
-    subject: "",
-    fileType: "",
-    input: "",
-    project: "",
-    participants: "",
-    date: "",
-    isLoading: true,
-  },
-  {
     id: "disc-1",
     subject: "Golf course plans",
     count: 3,

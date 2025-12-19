@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   Mic,
   Video,
@@ -26,7 +27,6 @@ const participants = [
   { id: 2, name: "Michael Ross", role: "Engineer" },
   { id: 3, name: "Emily Davis", role: "Architect" },
   { id: 4, name: "James Wilson", role: "Safety Officer" },
-  { id: 5, name: "Lisa Park", role: "Estimator" },
 ];
 
 export default function CallPage() {
@@ -90,17 +90,12 @@ export default function CallPage() {
               animate={{ opacity: 1, scale: 1 }}
               className="flex-1 relative rounded-xl overflow-hidden bg-zinc-700"
             >
-              {/* Placeholder for main speaker */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <Avatar className="h-32 w-32 mx-auto mb-4">
-                    <AvatarImage src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop" />
-                    <AvatarFallback className="text-4xl">SC</AvatarFallback>
-                  </Avatar>
-                  <p className="text-xl font-medium">{participants[0].name}</p>
-                  <p className="text-zinc-400">{participants[0].role}</p>
-                </div>
-              </div>
+              {/* Background GIF */}
+              <img 
+                src="/01.gif" 
+                alt="Background" 
+                className="absolute inset-0 w-full h-full object-cover"
+              />
               
               {/* Gradient overlay at bottom */}
               <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/50 to-transparent" />
@@ -116,17 +111,48 @@ export default function CallPage() {
                   transition={{ delay: 0.1 + index * 0.05 }}
                   className="aspect-video relative rounded-lg overflow-hidden bg-zinc-700 border border-zinc-600"
                 >
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Avatar className="h-12 w-12">
-                      <AvatarFallback className="text-sm">
-                        {participant.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                  </div>
-                  <div className="absolute bottom-1 left-1 right-1">
+                  {/* Add background GIF for Emily Davis */}
+                  {participant.name === "Emily Davis" && (
+                    <img 
+                      src="/02.gif" 
+                      alt="Background" 
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
+                  
+                  {/* Add background photo for Michael Ross */}
+                  {participant.name === "Michael Ross" && (
+                    <img 
+                      src="/Gemini_Generated_Image_e6ute8e6ute8e6ut.png" 
+                      alt="Michael Ross Background" 
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
+                  
+                  {/* Add background photo for James Wilson */}
+                  {participant.name === "James Wilson" && (
+                    <img 
+                      src="/image5.png" 
+                      alt="James Wilson Background" 
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
+                  
+                  {/* Show avatar only for participants without backgrounds */}
+                  {participant.name !== "Emily Davis" && participant.name !== "Michael Ross" && participant.name !== "James Wilson" && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Avatar className="h-12 w-12">
+                        <AvatarFallback className="text-sm">
+                          {participant.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+                  )}
+                  
+                  <div className="absolute bottom-1 left-1 right-1 z-10">
                     <p className="text-xs truncate text-center bg-black/50 rounded px-1">
                       {participant.name}
                     </p>

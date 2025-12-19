@@ -15,6 +15,7 @@ export interface Observation {
   category: string;
   comments?: Comment[];
   highlightSections?: string[];
+  sectionId?: string; // ID anchor for scrolling to section in document
 }
 
 export interface Comment {

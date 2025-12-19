@@ -65,14 +65,14 @@ export function PDFMock({ activeHighlight, highlightColor = "red", currentPage =
                   </div>
                 </div>
                 <div>
-                  <div className="text-orange-500 font-bold text-lg">TRIBUNE BUILDING</div>
+                  <div className="text-orange-500 font-bold text-lg">Pueblo del sol</div>
                 </div>
               </div>
 
               {/* Title */}
               <div>
                 <h1 className="text-xl font-bold">
-                  Request for Proposal (RFP) – Tribune Building Project
+                  Request for Proposal (RFP) – Pueblo del sol Project
                 </h1>
                 <p className="text-sm text-gray-600 mt-2 italic">
                   Incourage Community Foundation, Inc. (&ldquo;Incourage&rdquo;) located in rural central Wisconsin, invites proposals from interested firms for Construction Management services on the Tribune Building Project (located at 220 First Avenue South, Wisconsin Rapids).
