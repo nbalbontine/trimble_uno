@@ -24,7 +24,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Observation } from "@/lib/data/observations";
 
@@ -126,23 +125,21 @@ export function ObservationPanel({
         key={observation.id}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
+        className={cn(
+          "cursor-pointer rounded-lg p-4 transition-colors",
+          isSelected
+            ? cn(
+                "border-2",
+                borderColorClasses[observation.color],
+                bgColorClasses[observation.color]
+              )
+            : "hover:bg-muted/50"
+        )}
+        onClick={() =>
+          onSelectObservation(isSelected ? null : observation.id)
+        }
       >
-        <Card
-          className={cn(
-            "cursor-pointer",
-            isSelected
-              ? cn(
-                  "border-2",
-                  borderColorClasses[observation.color],
-                  bgColorClasses[observation.color]
-                )
-              : "border hover:bg-muted/50"
-          )}
-          onClick={() =>
-            onSelectObservation(isSelected ? null : observation.id)
-          }
-        >
-          <CardContent className="p-4">
+        <div>
             {/* Header */}
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-start gap-3 flex-1 min-w-0">
@@ -270,8 +267,7 @@ export function ObservationPanel({
                 </AnimatePresence>
               </CollapsibleContent>
             </Collapsible>
-          </CardContent>
-        </Card>
+        </div>
       </motion.div>
     );
   };

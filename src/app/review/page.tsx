@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { MoreHorizontal, X, ArrowRight } from "lucide-react";
 import { MainLayout, PageHeader } from "@/components/layout";
 import { PDFMock } from "@/components/documents/PDFMock";
+import { PDFPageList } from "@/components/documents/PDFPageList";
 import { FileList } from "@/components/documents/FileList";
 import { MapViewer } from "@/components/documents/MapViewer";
+import { MapLayersPanel } from "@/components/documents/MapLayersPanel";
 import { ObservationPanel } from "@/components/observations";
 import {
   files,
@@ -16,14 +18,59 @@ import {
   observationCategories,
 } from "@/lib/data";
 
+interface Layer {
+  id: string;
+  name: string;
+  visible: boolean;
+  children?: Layer[];
+}
+
+const initialLayers: Layer[] = [
+  {
+    id: "page1",
+    name: "Page 1",
+    visible: true,
+    children: [
+      { id: "layer1", name: "Layer 1", visible: true },
+      { id: "drawing", name: "Drawing", visible: true },
+      { id: "drawing2", name: "Drawing 2", visible: true },
+      { id: "drawing3", name: "Drawing 3", visible: true },
+      { id: "drawing4", name: "Drawing 4", visible: true },
+    ],
+  },
+];
+
 export default function ReviewPage() {
   const router = useRouter();
   const [selectedFile, setSelectedFile] = useState("rfp");
+  const [showFileList, setShowFileList] = useState(false);
   const [selectedObservation, setSelectedObservation] = useState<string | null>(
     null
   );
+  const [layers, setLayers] = useState<Layer[]>(initialLayers);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const totalRFPPages = 11;
 
   const isMapView = selectedFile === "golf-course";
+
+  const toggleLayerVisibility = (layerId: string, parentId?: string) => {
+    setLayers((prev) =>
+      prev.map((layer) => {
+        if (layer.id === layerId) {
+          return { ...layer, visible: !layer.visible };
+        }
+        if (layer.id === parentId && layer.children) {
+          return {
+            ...layer,
+            children: layer.children.map((child) =>
+              child.id === layerId ? { ...child, visible: !child.visible } : child
+            ),
+          };
+        }
+        return layer;
+      })
+    );
+  };
 
   const currentObservations = isMapView ? mapObservations : documentObservations;
   const currentCategories = isMapView
@@ -62,8 +109,20 @@ export default function ReviewPage() {
     },
   ];
 
+  const handleBackToFiles = () => {
+    setShowFileList(true);
+  };
+
+  const handleSelectFile = (fileId: string) => {
+    setSelectedFile(fileId);
+    setShowFileList(false);
+    setSelectedPage(1); // Reset to first page when changing files
+  };
+
+  const selectedFileName = files.find((f) => f.id === selectedFile)?.name || "Back";
+
   return (
-    <MainLayout>
+    <MainLayout navbarTitle="Request for Proposal">
       <PageHeader
         title={projectInfo.title}
         subtitle={projectInfo.subtitle}
@@ -73,13 +132,32 @@ export default function ReviewPage() {
       />
 
       <div className="flex-1 overflow-hidden flex flex-col lg:flex-row">
-        {/* Left - File List */}
-        <div className="w-full lg:w-48 shrink-0 border-b lg:border-b-0">
-          <FileList
-            files={files}
-            selectedFile={selectedFile}
-            onSelectFile={setSelectedFile}
-          />
+        {/* Left - File List OR PDF Page List OR Map Layers Panel */}
+        <div className="w-full lg:w-64 shrink-0 border-b lg:border-b-0">
+          {showFileList ? (
+            <FileList
+              files={files}
+              selectedFile={selectedFile}
+              onSelectFile={handleSelectFile}
+            />
+          ) : isMapView ? (
+            <MapLayersPanel
+              fileName={selectedFileName}
+              onBack={handleBackToFiles}
+              layers={layers}
+              onLayerToggle={toggleLayerVisibility}
+              selectedPage={selectedPage.toString()}
+              onPageSelect={(page) => setSelectedPage(parseInt(page))}
+            />
+          ) : (
+            <PDFPageList
+              totalPages={totalRFPPages}
+              selectedPage={selectedPage}
+              onSelectPage={setSelectedPage}
+              fileName={selectedFileName}
+              onBack={handleBackToFiles}
+            />
+          )}
         </div>
 
         {/* Center - Document/Map Viewer */}
@@ -93,12 +171,13 @@ export default function ReviewPage() {
             <PDFMock
               activeHighlight={activeHighlight}
               highlightColor={highlightColor}
+              currentPage={selectedPage}
             />
           )}
         </div>
 
         {/* Right - Observation Panel */}
-        <div className="w-full lg:w-80 shrink-0 border-t lg:border-t-0">
+        <div className="w-full lg:w-96 shrink-0 border-t lg:border-t-0">
           <ObservationPanel
             categories={currentCategories}
             observations={currentObservations}

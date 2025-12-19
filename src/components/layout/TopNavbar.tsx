@@ -10,7 +10,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export function TopNavbar() {
+interface TopNavbarProps {
+  title?: string;
+}
+
+export function TopNavbar({ title = "Trimble uno" }: TopNavbarProps) {
   return (
     <header className="h-14 border-b bg-card flex items-center justify-between px-4 shrink-0">
       {/* Left side - Logo and Title */}
@@ -18,7 +22,7 @@ export function TopNavbar() {
         <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
           <span className="text-primary-foreground font-bold text-sm">T</span>
         </div>
-        <span className="font-semibold text-lg tracking-tight">Trimble uno</span>
+        <span className="font-semibold text-lg tracking-tight">{title}</span>
       </div>
 
       {/* Right side - Actions */}

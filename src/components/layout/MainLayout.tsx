@@ -8,16 +8,18 @@ interface MainLayoutProps {
   children: ReactNode;
   showSidebar?: boolean;
   showNavbar?: boolean;
+  navbarTitle?: string;
 }
 
 export function MainLayout({
   children,
   showSidebar = true,
   showNavbar = true,
+  navbarTitle,
 }: MainLayoutProps) {
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-background">
-      {showNavbar && <TopNavbar />}
+      {showNavbar && <TopNavbar title={navbarTitle} />}
       
       <div className="flex-1 flex overflow-hidden">
         {showSidebar && <Sidebar />}

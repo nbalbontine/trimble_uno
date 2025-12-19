@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 interface PDFMockProps {
   activeHighlight?: string | null;
   highlightColor?: string;
+  currentPage?: number;
 }
 
 const highlightColorClasses: Record<string, string> = {
@@ -20,7 +21,7 @@ const highlightColorClasses: Record<string, string> = {
   purple: "bg-purple-200/50 border-l-4 border-purple-500",
 };
 
-export function PDFMock({ activeHighlight, highlightColor = "red" }: PDFMockProps) {
+export function PDFMock({ activeHighlight, highlightColor = "red", currentPage = 1 }: PDFMockProps) {
   const [zoom, setZoom] = useState(100);
   const highlightRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -488,6 +489,13 @@ export function PDFMock({ activeHighlight, highlightColor = "red" }: PDFMockProp
         <Button variant="ghost" size="icon" onClick={handleZoomIn} className="h-8 w-8">
           <ZoomIn className="h-4 w-4" />
         </Button>
+      </div>
+
+      {/* Page Indicator */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-background border rounded-lg shadow-lg px-3 py-1">
+        <span className="text-sm font-medium">
+          Page {currentPage} of 11
+        </span>
       </div>
     </div>
   );

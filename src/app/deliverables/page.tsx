@@ -73,8 +73,14 @@ export default function DeliverablesPage() {
             animate={{ opacity: 1, x: 0 }}
           >
             <Card className="h-full">
-              <ScrollArea className="h-full">
-                <CardContent className="p-6 space-y-6">
+              <CardHeader className="pb-4 border-b">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded bg-muted" />
+                  <CardTitle className="text-base">Project Details</CardTitle>
+                </div>
+              </CardHeader>
+              <ScrollArea className="h-[calc(100%-60px)]">
+                <CardContent className="p-4 space-y-6">
                   {/* Summary Section */}
                   <section>
                     <h2 className="text-lg font-semibold mb-4">Summary</h2>
@@ -126,15 +132,16 @@ export default function DeliverablesPage() {
                 </div>
               </CardHeader>
               <ScrollArea className="h-[calc(100%-60px)]">
-                <CardContent className="p-4 space-y-4">
+                <CardContent className="p-4 grid grid-rows-2 gap-4 h-full">
                   {kanbanObservations.map((item, index) => (
                     <motion.div
                       key={item.id}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.15 + index * 0.05 }}
+                      className="min-h-0"
                     >
-                      <Card className="bg-muted/50">
+                      <Card className="bg-muted/50 h-full">
                         <CardContent className="p-4">
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-start gap-3">
